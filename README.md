@@ -26,7 +26,7 @@ You will then have a `boot2k8s.iso` file that you can use to start a VirtualBox 
 Run
 ---
 
-If you have clone the repository you can automatically create the VirtualBox VM based on boot2k8s:
+If you have cloned the repository you can automatically create the VirtualBox VM based on boot2k8s:
 
     $ make run
 
