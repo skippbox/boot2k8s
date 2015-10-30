@@ -1,4 +1,4 @@
 From https://github.com/boot2docker/boot2docker/blob/master/doc/BUILD.md
 
-$ sudo docker build -t test-img .
-$ sudo docker run --rm test-img > boot2docker.iso
+$ sudo docker build -t [img-name] .
+$ sudo docker run --rm [img-name] > boot2docker.iso
