@@ -13,7 +13,7 @@ The ISO for `boot2k8s` is available on the [release page](https://github.com/ski
 Build
 -----
 
-To build it you will need to have a Docker host, clone this repo and run `make`:
+To build it yourself, you will need to have a Docker host, clone this repo and run `make`:
 
     $ docker version
     ...
@@ -26,11 +26,24 @@ You will then have a `boot2k8s.iso` file that you can use to start a VirtualBox 
 Run
 ---
 
+If you did not clone the repo and just downloaded the ISO image from the release page, create a VirtualBox VM manually through the VirtualBox UI.
+Setup portforwarding on the default NAT interface to expose port 8080 of the host to port 8080 of the guest.
+
 If you have cloned the repository you can automatically create the VirtualBox VM based on boot2k8s:
 
     $ make run
 
-Once the Kubernetes API server starts running you can use `kubectl` to start using Kubernetes:
+If you do not have the `kubectl` Kubernetes client, get it now and make it executable `chmod +x kubectl`.
+
+Darwin
+~~~~~
+    $ wget https://storage.googleapis.com/kubernetes-release/release/v1.0.3/bin/darwin/amd64/kubectl
+
+Linux
+~~~~~
+    $ wget https://storage.googleapis.com/kubernetes-release/release/v1.0.3/bin/linux/amd64/kubectl
+
+Then, once the Kubernetes API server starts running you can use `kubectl` to start using Kubernetes:
 
     $ kubectl get pods
     NAME                          READY     STATUS    RESTARTS   AGE
