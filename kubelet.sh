@@ -1,8 +1,7 @@
 #!/bin/sh
 
 start() {
-	/usr/local/bin/kubelet --api-servers=http://127.0.0.1:8080 --allow-privileged=true \
-		--config=/usr/local/etc/kubernetes/manifests --v=2
+	/usr/local/bin/kubelet --api-servers=http://127.0.0.1:8080 --allow-privileged=true --config=/usr/local/etc/kubernetes/manifests --v=2 > /var/log/kubelet.log 2>&1 &
 }
 
 stop() {
