@@ -35,14 +35,10 @@ If you have cloned the repository you can automatically create the VirtualBox VM
 
 If you do not have the `kubectl` Kubernetes client, get it now and make it executable `chmod +x kubectl`.
 
-Darwin
-~~~~~~
-
+Darwin:
     $ wget https://storage.googleapis.com/kubernetes-release/release/v1.0.3/bin/darwin/amd64/kubectl
 
-Linux
-~~~~~
-
+Linux:
     $ wget https://storage.googleapis.com/kubernetes-release/release/v1.0.3/bin/linux/amd64/kubectl
 
 Then, once the Kubernetes API server starts running you can use `kubectl` to start using Kubernetes:
