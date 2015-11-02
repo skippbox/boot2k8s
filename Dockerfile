@@ -23,8 +23,8 @@ RUN curl -fL -o $ROOTFS/usr/local/bin/kubelet https://storage.googleapis.com/kub
 
 #RUN mv kubelet /usr/bin/kubelet
 RUN chmod +x $ROOTFS/usr/local/bin/kubelet
-RUN mkdir -p $ROOTFS/usr/local/etc/kubernetes/manifests/
-COPY kubernetes.yaml $ROOTFS/usr/local/etc/kubernetes/manifests/kubernetes.yaml
+RUN mkdir -p $ROOTFS/etc/kubernetes/manifests/
+COPY kubernetes.yaml $ROOTFS/etc/kubernetes/manifests/kubernetes.yaml
 
 #Create Kubelet service
 
