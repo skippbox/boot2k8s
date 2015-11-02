@@ -51,7 +51,5 @@ RUN chmod +x $ROOTFS/usr/local/etc/init.d/kubelet
 COPY k8s.sh $ROOTFS/etc/rc.d/k8s.sh
 RUN chmod +x $ROOTFS/etc/rc.d/k8s.sh
 
-RUN echo "/etc/rc.d/k8s.sh" >> $ROOTFS/opt/bootscript.sh
-
 RUN /make_iso.sh
 CMD ["cat", "boot2docker.iso"]
