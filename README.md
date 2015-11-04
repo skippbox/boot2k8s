@@ -9,11 +9,22 @@ Download
 --------
 
 The ISO for `boot2k8s` is available on the [release page](https://github.com/skippbox/boot2k8s/releases).
+After downloading the ISO, create a new virtual machine in VirtualBox. You can use the VirtualBox UI or start it with the CLI tools:
 
-Build
------
+    $ VBoxManage createvm --name boot2k8s --ostype "Linux_64" --register
+    $ VBoxManage storagectl boot2k8s --name "IDE Controller" --add ide
+    $ VBoxManage storageattach boot2k8s --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium ./boot2k8s.iso
+    $ VBoxManage modifyvm boot2k8s --memory 1024
+    $ VBoxManage startvm boot2k8s --type headless
+    $ VBoxManage controlvm boot2k8s natpf1 k8s,tcp,,8080,,8080
 
-To build it yourself, you will need to have a Docker host, clone this repo and run `make`:
+You will have a running VM, that runs k8s in it all in a single node.
+Port 8080 is exposed on the host at `http://localhost:8080`
+
+Build from source
+-----------------
+
+To build the ISO yourself from source, you will need to have a Docker host, clone this repo and run `make`:
 
     $ docker version
     ...
@@ -23,8 +34,8 @@ To build it yourself, you will need to have a Docker host, clone this repo and r
 
 You will then have a `boot2k8s.iso` file that you can use to start a VirtualBox machine that will run Kubernetes solo.
 
-Run
----
+Run a VM with a new ISO
+-----------------------
 
 If you did not clone the repo and just downloaded the ISO image from the release page, create a VirtualBox VM manually through the VirtualBox UI.
 Setup portforwarding on the default NAT interface to expose port 8080 of the host to port 8080 of the guest.
@@ -32,6 +43,10 @@ Setup portforwarding on the default NAT interface to expose port 8080 of the hos
 If you have cloned the repository you can automatically create the VirtualBox VM based on boot2k8s:
 
     $ make run
+
+
+Usage
+-----
 
 If you do not have the `kubectl` Kubernetes client, get it:
 
@@ -43,7 +58,7 @@ Linux:
 
     $ wget https://storage.googleapis.com/kubernetes-release/release/v1.0.3/bin/linux/amd64/kubectl
 
-and install it with:
+Then make it exectuable and put it in your PATH, for example:
 
     $ chmod +x kubectl && sudo ln -sf $PWD/kubectl /usr/local/bin/
 
