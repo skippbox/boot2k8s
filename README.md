@@ -33,7 +33,7 @@ If you have cloned the repository you can automatically create the VirtualBox VM
 
     $ make run
 
-If you do not have the `kubectl` Kubernetes client, get it now and make it executable `chmod +x kubectl`.
+If you do not have the `kubectl` Kubernetes client, get it:
 
 Darwin:
 
@@ -42,6 +42,10 @@ Darwin:
 Linux:
 
     $ wget https://storage.googleapis.com/kubernetes-release/release/v1.0.3/bin/linux/amd64/kubectl
+
+and install it with:
+
+    $ chmod +x kubectl && sudo ln -sf $PWD/kubectl /usr/local/bin/
 
 Then, once the Kubernetes API server starts running you can use `kubectl` to start using Kubernetes:
 
