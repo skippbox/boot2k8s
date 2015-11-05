@@ -18,11 +18,17 @@ spec:
       args: 
         - "/hyperkube"
         - "apiserver"
-        - "--allow-privileged=true"
+        - "--admission_control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota"
+        - "--authorization-mode=ABAC"
+        - "--authorization-policy-file=/etc/kubernetes/policy.jsonl"
         - "--etcd-servers=http://127.0.0.1:2379"
         - "--insecure-bind-address=0.0.0.0"
         - "--service-cluster-ip-range=10.200.20.0/24"
         - "--v=2"
+        - "--tls-cert-file=/var/run/kubernetes/apiserver/cert.pem"
+        - "--tls-private-key-file=/var/run/kubernetes/apiserver/key.pem"
+        - "--secure-port=6443"
+        - "--insecure-port=8080"
     - name: "kube-controller-manager"
       image: "gcr.io/google_containers/hyperkube:v1.0.3"
       args: 
@@ -44,5 +50,10 @@ spec:
         - "proxy"
         - "--master=http://127.0.0.1:8080"
         - "--v=2"
+      users:
+        - name: proxy
+          user:
+             client-certificate: /var/run/kubernetes/proxyserver/cert.pem
+             client-key: /var/run/kubernetes/proxyserver/key.pem
       securityContext:
         privileged: true

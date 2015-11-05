@@ -24,7 +24,12 @@ RUN curl -fL -o $ROOTFS/usr/local/bin/kubelet https://storage.googleapis.com/kub
 #RUN mv kubelet /usr/bin/kubelet
 RUN chmod +x $ROOTFS/usr/local/bin/kubelet
 RUN mkdir -p $ROOTFS/etc/kubernetes/manifests/
+#RUN mkdir -p $ROOTFS/etc/kubernetes/certs/
+RUN mkdir -p $ROOTFS/var/run/kubernetes/apiserver
+RUN mkdir -p $ROOTFS/var/run/kubernetes/proxyserver
+RUN mkdir -p $ROOTFS/var/run/kubernetes/kubelet
 COPY kubernetes.yaml $ROOTFS/etc/kubernetes/manifests/kubernetes.yaml
+COPY policy.jsonl $ROOTFS/etc/kubernetes/policy.jsonl
 
 #Create Kubelet service
 
@@ -48,8 +53,10 @@ COPY kubernetes.yaml $ROOTFS/etc/kubernetes/manifests/kubernetes.yaml
 #COPY k8s.sh $ROOTFS/etc/boot2docker/hooks/after-docker.d/k8s.sh
 COPY kubelet.sh $ROOTFS/usr/local/etc/init.d/kubelet
 RUN chmod +x $ROOTFS/usr/local/etc/init.d/kubelet
+RUN ln -s /usr/local/etc/init.d/kubelet $ROOTFS/etc/init.d/kubelet
 COPY k8s.sh $ROOTFS/etc/rc.d/k8s.sh
 RUN chmod +x $ROOTFS/etc/rc.d/k8s.sh
+# Disabled to allow for activation by way of docker-machine
 RUN echo "/etc/rc.d/k8s.sh" >> $ROOTFS/opt/bootscript.sh
 
 RUN /make_iso.sh
