@@ -66,8 +66,6 @@ spec:
         - "scheduler"
         - "--master=http://127.0.0.1:8080"
         - "--v=2"
-      securityContext:
-        privileged: true
     - name: "kube-proxy"
       volumeMounts:
         - name: "certs"
@@ -79,5 +77,8 @@ spec:
         - "proxy"
         - "--master=http://127.0.0.1:8080"
         - "--v=2"
-      securityContext:
-        privileged: true
+      users:
+        - name: proxy
+          user:
+             client-certificate: /var/run/kubernetes/proxyserver/cert.pem
+             client-key: /var/run/kubernetes/proxyserver/key.pem
