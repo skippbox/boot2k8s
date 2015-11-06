@@ -1,4 +1,4 @@
-{"user":"admin"}
+{"user":"kuser"}
 {"user":"scheduler", "readonly": true, "resource": "pods"}
 {"user":"scheduler", "resource": "bindings"}
 {"user":"proxy", "resource": "services"}

@@ -1,9 +1,19 @@
 apiVersion: v1
 kind: Pod
+clusters:
+  - cluster:
+      certificate-authority: /var/run/kubernetes/ca.pem
 metadata: 
   name: kube-controller
 spec: 
   hostNetwork: true
+  volumes:
+    - name: "policies"
+      hostPath:
+        path: "/etc/kubernetes/policies"
+    - name: "certs"
+      hostPath:
+        path: "/var/run/kubernetes"
   containers: 
     - name: "etcd"
       image: "b.gcr.io/kuar/etcd:2.1.1"
@@ -14,22 +24,31 @@ spec:
         - "--listen-peer-urls=http://127.0.0.1:2380"
         - "--name=etcd"
     - name: "kube-apiserver"
+      volumeMounts:
+        - name: "certs"
+          mountPath: "/var/run/kubernetes"
+          readOnly: true
+        - name: "policies"
+          mountPath: "/etc/kubernetes/policies"
+          readOnly: true
       image: "gcr.io/google_containers/hyperkube:v1.0.3"
       args: 
         - "/hyperkube"
         - "apiserver"
-        - "--admission_control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota"
-        - "--authorization-mode=ABAC"
-        - "--authorization-policy-file=/etc/kubernetes/policy.jsonl"
+        - "--authorization-mode=AlwaysAllow"
+        - "--client-ca-file=/var/run/kubernetes/ca.pem"
         - "--etcd-servers=http://127.0.0.1:2379"
         - "--insecure-bind-address=0.0.0.0"
-        - "--service-cluster-ip-range=10.200.20.0/24"
-        - "--v=2"
-        - "--tls-cert-file=/var/run/kubernetes/apiserver/cert.pem"
-        - "--tls-private-key-file=/var/run/kubernetes/apiserver/key.pem"
-        - "--secure-port=6443"
         - "--insecure-port=8080"
+        - "--secure-port=6443"
+        - "--service-cluster-ip-range=10.200.20.0/24"
+        - "--token-auth-file=/var/run/kubernetes/tokenfile.txt"
+        - "--v=2"
     - name: "kube-controller-manager"
+      volumeMounts:
+        - name: "certs"
+          mountPath: "/var/run/kubernetes"
+          readOnly: true
       image: "gcr.io/google_containers/hyperkube:v1.0.3"
       args: 
         - "/hyperkube"
@@ -37,23 +56,28 @@ spec:
         - "--master=http://127.0.0.1:8080"
         - "--v=2"
     - name: "kube-scheduler"
+      volumeMounts:
+        - name: "certs"
+          mountPath: "/var/run/kubernetes"
+          readOnly: true
       image: "gcr.io/google_containers/hyperkube:v1.0.3"
       args:
         - "/hyperkube"
         - "scheduler"
         - "--master=http://127.0.0.1:8080"
         - "--v=2"
+      securityContext:
+        privileged: true
     - name: "kube-proxy"
+      volumeMounts:
+        - name: "certs"
+          mountPath: "/var/run/kubernetes"
+          readOnly: true
       image: "gcr.io/google_containers/hyperkube:v1.0.3"
       args:
         - "/hyperkube"
         - "proxy"
         - "--master=http://127.0.0.1:8080"
         - "--v=2"
-      users:
-        - name: proxy
-          user:
-             client-certificate: /var/run/kubernetes/proxyserver/cert.pem
-             client-key: /var/run/kubernetes/proxyserver/key.pem
       securityContext:
         privileged: true
