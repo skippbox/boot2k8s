@@ -31,7 +31,7 @@ RUN mkdir -p $ROOTFS/var/run/kubernetes/proxyserver
 RUN mkdir -p $ROOTFS/var/run/kubernetes/kubelet
 COPY kubernetes.yaml $ROOTFS/etc/kubernetes/manifests/kubernetes.yaml
 COPY kubelet.kubeconfig $ROOTFS/etc/kubernetes/kubelet.kubeconfig
-COPY policy.jsonl $ROOTFS/etc/kubernetes/policies/policy.jsonl
+#COPY policy.jsonl $ROOTFS/etc/kubernetes/policies/policy.jsonl
 
 #Create Kubelet service
 
@@ -59,7 +59,7 @@ RUN ln -s /usr/local/etc/init.d/kubelet $ROOTFS/etc/init.d/kubelet
 COPY k8s.sh $ROOTFS/etc/rc.d/k8s.sh
 RUN chmod +x $ROOTFS/etc/rc.d/k8s.sh
 # Disabled to allow for activation by way of docker-machine
-#RUN echo "/etc/rc.d/k8s.sh" >> $ROOTFS/opt/bootscript.sh
+RUN echo "/etc/rc.d/k8s.sh" >> $ROOTFS/opt/bootscript.sh
 
 RUN /make_iso.sh
 CMD ["cat", "boot2docker.iso"]

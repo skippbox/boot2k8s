@@ -16,12 +16,14 @@ run_stop() {
 
 	if [ $P != "x" ]; then
 		kill -9 $(pidof kubelet)
-		# TODO: Add something to restart the containers as well
+		for i in `docker ps|grep k8s|awk '{print $1}'`; do
+          docker kill -s 9 $i
+        done
 	fi
 }
 
 run_restart() {
-	if pidof sshd > /dev/null; then
+	if pidof kubelet > /dev/null; then
 		run_stop && run_start
 	else
 		run_start

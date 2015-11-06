@@ -35,14 +35,10 @@ spec:
       args: 
         - "/hyperkube"
         - "apiserver"
-        - "--authorization-mode=AlwaysAllow"
-        - "--client-ca-file=/var/run/kubernetes/ca.pem"
+        - "--allow-privileged=true"
         - "--etcd-servers=http://127.0.0.1:2379"
         - "--insecure-bind-address=0.0.0.0"
-        - "--insecure-port=8080"
-        - "--secure-port=6443"
         - "--service-cluster-ip-range=10.200.20.0/24"
-        - "--token-auth-file=/var/run/kubernetes/tokenfile.txt"
         - "--v=2"
     - name: "kube-controller-manager"
       volumeMounts:
@@ -77,8 +73,5 @@ spec:
         - "proxy"
         - "--master=http://127.0.0.1:8080"
         - "--v=2"
-      users:
-        - name: proxy
-          user:
-             client-certificate: /var/run/kubernetes/proxyserver/cert.pem
-             client-key: /var/run/kubernetes/proxyserver/key.pem
+      securityContext:
+        privileged: true
