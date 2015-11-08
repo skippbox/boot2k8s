@@ -17,6 +17,10 @@ all: build cat
 
 build:
 	$(DOCKER_EXEC) build -t $(VM_NAME) .
+	@echo ==============================================================
+	@echo Next step: start the VM with kubernetes with this command:
+	@echo make run
+	@echo ==============================================================
 
 cat:
 	$(DOCKER_EXEC) run --rm $(VM_NAME) > $(ISO_NAME)
@@ -28,6 +32,11 @@ run:
 	$(VBOX_EXEC) modifyvm $(VM_NAME) --memory 1024
 	$(VBOX_EXEC) startvm $(VM_NAME) --type headless
 	$(VBOX_EXEC) controlvm $(VM_NAME) natpf1 k8s,tcp,,8080,,8080
+	@echo ==============================================================
+	@echo The VM has been started.
+	@echo Please wait few time and run this command to view your pod:
+	@echo ./kubectl get pods
+	@echo ==============================================================
 
 clean:
 	$(DOCKER_EXEC) rmi $(VM_NAME)
