@@ -29,7 +29,7 @@ run:
 	$(VBOX_EXEC) createvm --name $(VM_NAME) --ostype "Linux_64" --register
 	$(VBOX_EXEC) storagectl $(VM_NAME) --name "IDE Controller" --add ide
 	$(VBOX_EXEC) storageattach $(VM_NAME) --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium ./$(ISO_NAME)
-	$(VBOX_EXEC) modifyvm $(VM_NAME) --memory 1024
+	$(VBOX_EXEC) modifyvm $(VM_NAME) --memory 1024 --vrde on --vrdeaddress 127.0.0.1 --vrdeport 3390 --vrdeauthtype null
 	$(VBOX_EXEC) startvm $(VM_NAME) --type headless
 	$(VBOX_EXEC) controlvm $(VM_NAME) natpf1 k8s,tcp,,8080,,8080
 	@echo ==============================================================
