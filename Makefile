@@ -38,6 +38,12 @@ run:
 	@echo ./kubectl get pods
 	@echo ==============================================================
 
+stopvm:
+	$(VBOX_EXEC) controlvm $(VM_NAME) poweroff
+
 clean:
 	$(DOCKER_EXEC) rmi $(VM_NAME)
 	rm $(ISO_NAME)
+
+cleanvm:
+	$(VBOX_EXEC) unregistervm $(VM_NAME) --delete
