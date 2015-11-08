@@ -1,19 +1,34 @@
+
+VM_NAME = boot2k8s
+ISO_NAME = $(VM_NAME).iso
+
+DOCKER_EXEC := $(shell which docker)
+VBOX_EXEC := $(shell which VBoxManage)
+
+ifeq ($(DOCKER_EXEC),)
+$(error No docker in PATH.)
+endif
+
+ifeq ($(VBOX_EXEC),)
+$(error No VBoxManage in PATH.)
+endif
+
 all: build cat
 
 build:
-	docker build -t boot2k8s .
+	$(DOCKER_EXEC) build -t $(VM_NAME) .
 
 cat:
-	docker run --rm boot2k8s > boot2k8s.iso
+	$(DOCKER_EXEC) run --rm $(VM_NAME) > $(ISO_NAME)
 
 run:
-	VBoxManage createvm --name boot2k8s --ostype "Linux_64" --register
-	VBoxManage storagectl boot2k8s --name "IDE Controller" --add ide
-	VBoxManage storageattach boot2k8s --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium ./boot2k8s.iso
-	VBoxManage modifyvm boot2k8s --memory 1024
-	VBoxManage startvm boot2k8s --type headless
-	VBoxManage controlvm boot2k8s natpf1 k8s,tcp,,8080,,8080
+	$(VBOX_EXEC) createvm --name $(VM_NAME) --ostype "Linux_64" --register
+	$(VBOX_EXEC) storagectl $(VM_NAME) --name "IDE Controller" --add ide
+	$(VBOX_EXEC) storageattach $(VM_NAME) --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium ./$(ISO_NAME)
+	$(VBOX_EXEC) modifyvm $(VM_NAME) --memory 1024
+	$(VBOX_EXEC) startvm $(VM_NAME) --type headless
+	$(VBOX_EXEC) controlvm $(VM_NAME) natpf1 k8s,tcp,,8080,,8080
 
 clean:
-	docker rmi boot2k8s
-	rm boot2k8s.iso
+	$(DOCKER_EXEC) rmi $(VM_NAME)
+	rm $(ISO_NAME)
