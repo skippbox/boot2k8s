@@ -15,11 +15,15 @@ After downloading the ISO, create a new virtual machine in VirtualBox. You can u
     $ VBoxManage storagectl boot2k8s --name "IDE Controller" --add ide
     $ VBoxManage storageattach boot2k8s --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium ./boot2k8s.iso
     $ VBoxManage modifyvm boot2k8s --memory 1024
+    $ VBoxManage modifyvm boot2k8s --memory 1024 --vrde on --vrdeaddress 127.0.0.1 --vrdeport 3390 --vrdeauthtype null
     $ VBoxManage startvm boot2k8s --type headless
     $ VBoxManage controlvm boot2k8s natpf1 k8s,tcp,,8080,,8080
 
 You will have a running VM, that runs k8s in it all in a single node.
 Port 8080 is exposed on the host at `http://localhost:8080`
+
+To connect to the VM with remote desktop you will need to have the Virtual Box extension pack that corresponds to your version of VBox.
+With the pack installed you will be able to connect to the VM with VRDE at `127.0.0.1:3390`
 
 Build from source
 -----------------
