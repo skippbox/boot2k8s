@@ -2,7 +2,7 @@
 
 run_start() {
 	echo "Starting kubelet..."
-		/usr/local/bin/kubelet --api-servers=http://127.0.0.1:8080 --allow-privileged=true --config=/etc/kubernetes/manifests --kubeconfig=/etc/kubernetes/kubelet.kubeconfig --v=2 > /var/log/kubelet.log 2>&1 &
+		/usr/local/bin/kubelet --api-servers=http://127.0.0.1:8080 --cluster-dns=10.0.0.10 --cluster-domain=cluster.local --allow-privileged=true --config=/etc/kubernetes/manifests --kubeconfig=/etc/kubernetes/kubelet.kubeconfig --v=2 > /var/log/kubelet.log 2>&1 &
 }
 
 run_stop() {
