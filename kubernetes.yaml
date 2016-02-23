@@ -31,7 +31,7 @@ spec:
         - name: "policies"
           mountPath: "/etc/kubernetes/policies"
           readOnly: true
-      image: "gcr.io/google_containers/hyperkube:v1.1.4"
+      image: "gcr.io/google_containers/hyperkube-amd64:v1.2.0-alpha.8"
       args: 
         - "/hyperkube"
         - "apiserver"
@@ -45,7 +45,7 @@ spec:
         - name: "certs"
           mountPath: "/var/run/kubernetes"
           readOnly: true
-      image: "gcr.io/google_containers/hyperkube:v1.1.4"
+      image: "gcr.io/google_containers/hyperkube-amd64:v1.2.0-alpha.8"
       args: 
         - "/hyperkube"
         - "controller-manager"
@@ -56,7 +56,7 @@ spec:
         - name: "certs"
           mountPath: "/var/run/kubernetes"
           readOnly: true
-      image: "gcr.io/google_containers/hyperkube:v1.1.4"
+      image: "gcr.io/google_containers/hyperkube-amd64:v1.2.0-alpha.8"
       args:
         - "/hyperkube"
         - "scheduler"
@@ -67,7 +67,7 @@ spec:
         - name: "certs"
           mountPath: "/var/run/kubernetes"
           readOnly: true
-      image: "gcr.io/google_containers/hyperkube:v1.1.4"
+      image: "gcr.io/google_containers/hyperkube-amd64:v1.2.0-alpha.8"
       args:
         - "/hyperkube"
         - "proxy"
