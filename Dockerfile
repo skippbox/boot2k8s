@@ -61,5 +61,8 @@ RUN chmod +x $ROOTFS/etc/rc.d/k8s.sh
 # Disabled to allow for activation by way of docker-machine
 RUN echo "/etc/rc.d/k8s.sh" >> $ROOTFS/opt/bootscript.sh
 
+# Copy socat into place
+COPY deps/bin/socat $ROOTFS/usr/bin/socat
+
 RUN /make_iso.sh
 CMD ["cat", "boot2docker.iso"]

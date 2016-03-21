@@ -16,6 +16,7 @@ endif
 all: build cat
 
 build:
+	./builddeps.sh
 	$(DOCKER_EXEC) build -t $(VM_NAME) .
 	@echo ==============================================================
 	@echo Next step: start the VM with kubernetes with this command:
@@ -43,7 +44,7 @@ stopvm:
 
 clean:
 	$(DOCKER_EXEC) rmi $(VM_NAME)
-	rm $(ISO_NAME)
+	rm -rf $(ISO_NAME) deps
 
 cleanvm:
 	$(VBOX_EXEC) unregistervm $(VM_NAME) --delete
