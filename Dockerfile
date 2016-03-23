@@ -16,9 +16,9 @@ FROM boot2docker/boot2docker
 
 #Install Kubelet and Kubelet manifest
 
-ENV K8S_VERSION=v1.2.0-alpha.8
+ENV K8S_VERSION=v1.2.0
 
-RUN curl -fL -o $ROOTFS/usr/local/bin/kubelet https://storage.googleapis.com/kubernetes-release/release/v1.2.0-alpha.8/bin/linux/amd64/kubelet && \
+RUN curl -fL -o $ROOTFS/usr/local/bin/kubelet https://storage.googleapis.com/kubernetes-release/release/v1.2.0/bin/linux/amd64/kubelet && \
 	chmod +x $ROOTFS/usr/local/bin/kubelet
 
 #RUN mv kubelet /usr/bin/kubelet
