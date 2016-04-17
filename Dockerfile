@@ -18,11 +18,11 @@ FROM boot2docker/boot2docker
 
 ENV K8S_VERSION=v1.2.0
 
-RUN curl -fL -o $ROOTFS/usr/local/bin/kubelet https://storage.googleapis.com/kubernetes-release/release/v1.2.0/bin/linux/amd64/kubelet && \
-	chmod +x $ROOTFS/usr/local/bin/kubelet
+RUN curl -fL -o $ROOTFS/usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.2.0/bin/linux/amd64/kubectl
 
 #RUN mv kubelet /usr/bin/kubelet
 RUN chmod +x $ROOTFS/usr/local/bin/kubelet
+RUN chmod +x $ROOTFS/usr/local/bin/kubectl
 RUN mkdir -p $ROOTFS/etc/kubernetes/manifests/
 RUN mkdir -p $ROOTFS/etc/kubernetes/policies/
 #RUN mkdir -p $ROOTFS/etc/kubernetes/certs/
@@ -60,6 +60,7 @@ COPY k8s.sh $ROOTFS/etc/rc.d/k8s.sh
 RUN chmod +x $ROOTFS/etc/rc.d/k8s.sh
 # Disabled to allow for activation by way of docker-machine
 RUN echo "/etc/rc.d/k8s.sh" >> $ROOTFS/opt/bootscript.sh
+RUN echo "docker run --rm -v /var/lib/boot2docker/:/target jpetazzo/nsenter" >> $ROOTFS/opt/bootscript.sh
 
 # Copy socat into place
 COPY deps/bin/socat $ROOTFS/usr/bin/socat
